@@ -2,13 +2,13 @@ import React from 'react';
 import filterStyles from './style.module.css';
 import { nanoid } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFilter } from 'store/selectors/selectors';
 import { changeFilter } from 'store/sliceFilter/sliceFilter';
+import { selectFilter } from '../../store/selectors/selectors';
 
 const filterInputId = nanoid();
 
 function Filter() {
-  const value = useSelector(getFilter);
+  const value = useSelector(selectFilter);
   const dispatch = useDispatch();
 
   const onChangeFilter = event => {
