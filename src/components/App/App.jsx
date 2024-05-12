@@ -2,14 +2,21 @@ import appStyles from './style.module.css';
 import ContactForm from '../ContactForm/ContactForm';
 import ContactList from '../ContactList/ContactList';
 import Filter from '../Filter/Filter';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectContacts } from '../../store/selectors/selectors';
+import { useEffect } from 'react';
+import { fetchContacts } from '../../store/operations/operations';
 
 
 
 const App = () => {
   
   const contacts = useSelector(selectContacts);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   return (
     <div>
