@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { nanoid } from 'nanoid';
 import contactFormStyles from './style.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { getVisibleContacts } from 'store/selectors/selectors';
-import { addContact } from 'store/sliceContacts/sliceContacts';
 import { Notify } from 'notiflix';
+import { selectVisibleContacts } from '../../store/selectors/selectors';
+import { addContacts } from '../../store/operations/operations';
 
 
 const nameInputId = nanoid();
@@ -15,7 +15,7 @@ const ContactForm = () => {
   const [number, setNumber] = useState('');
   const [id, setId] = useState(nanoid());
 
-  const contacts = useSelector(getVisibleContacts);
+  const contacts = useSelector(selectVisibleContacts);
   const dispatch = useDispatch();
 
   const handleSubmit = event => {
@@ -29,7 +29,15 @@ const ContactForm = () => {
       return Notify.info(`${name} is already in contacts`);
     }
 
-    dispatch(addContact({ id, name, number }));
+    dispatch(addContacts({ id, name, number }))
+      .unwrap()
+      .then(() => {
+        Notify.success(`New contact added`);
+      })
+      .catch(() => {
+        Notify.failure(`OOPS...`);
+      });
+    
     setId(nanoid());
     setName('');
     setNumber('');
